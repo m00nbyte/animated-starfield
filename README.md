@@ -56,23 +56,27 @@ const options = {
     background: '#141d27',
     direction: 0,
     sizes: {
-        amount: 50,
-        color: '#ffffff',
-        speed: 0.8,
-        blink: 2000
+        small: {
+            amount: 50,
+            color: '#ffffff',
+            speed: 0.8,
+            blink: 2000
+        },
+        medium: {
+            amount: 50,
+            color: '#ffffff',
+            speed: 0.6,
+            blink: 2000
+        },
+        large: {
+            amount: 50,
+            color: '#ffffff',
+            speed: 0.5,
+            blink: 2000
+        }
     },
-    medium: {
-        amount: 50,
-        color: '#ffffff',
-        speed: 0.6,
-        blink: 2000
-    },
-    large: {
-        amount: 50,
-        color: '#ffffff',
-        speed: 0.5,
-        blink: 2000
-    }
+    fadeInDuration: 1000,
+    fadeInFrom: 'black'
 };
 ```
 
@@ -138,6 +142,18 @@ The speed at which the stars move across the screen. A higher value increases th
 Type: `Number`<br />
 
 The duration (in milliseconds) for a star of that size to blink. To disable set to `0`.
+
+### `fadeInDuration`
+
+Type: `Number`<br />
+
+The duration (in milliseconds) of the fade in animation.
+
+### `fadeInFrom`
+
+Type: `String`<br />
+
+The color to fade in from (black | white | transparent).
 
 ## Update options
 

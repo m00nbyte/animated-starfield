@@ -141,7 +141,7 @@ The duration (in milliseconds) for a star of that size to blink. To disable set 
 
 ## Update options
 
-#### `updateOptions`
+### `updateOptions`
 
 Type: `Function`<br />
 

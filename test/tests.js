@@ -23,7 +23,9 @@ const tests = [
                     speed: 0.5,
                     blink: 2000
                 }
-            }
+            },
+            fadeInDuration: 1000,
+            fadeInFrom: 'black'
         }
     },
     {
@@ -50,7 +52,9 @@ const tests = [
                     speed: 0.5,
                     blink: 2000
                 }
-            }
+            },
+            fadeInDuration: 1000,
+            fadeInFrom: 'black'
         }
     },
     {
@@ -77,7 +81,9 @@ const tests = [
                     speed: 2,
                     blink: 2000
                 }
-            }
+            },
+            fadeInDuration: 1000,
+            fadeInFrom: 'black'
         }
     },
     {
@@ -104,7 +110,9 @@ const tests = [
                     speed: 0.5,
                     blink: 300
                 }
-            }
+            },
+            fadeInDuration: 1000,
+            fadeInFrom: 'black'
         }
     },
     {
@@ -131,7 +139,9 @@ const tests = [
                     speed: 0.5,
                     blink: 2000
                 }
-            }
+            },
+            fadeInDuration: 1000,
+            fadeInFrom: 'black'
         }
     },
     {
@@ -158,7 +168,9 @@ const tests = [
                     speed: 0.5,
                     blink: 2000
                 }
-            }
+            },
+            fadeInDuration: 1000,
+            fadeInFrom: 'black'
         }
     },
     {
@@ -185,7 +197,9 @@ const tests = [
                     speed: 0,
                     blink: 2000
                 }
-            }
+            },
+            fadeInDuration: 1000,
+            fadeInFrom: 'black'
         }
     },
     {
@@ -212,7 +226,9 @@ const tests = [
                     speed: 0.5,
                     blink: 2000
                 }
-            }
+            },
+            fadeInDuration: 1000,
+            fadeInFrom: 'black'
         }
     }
 ];

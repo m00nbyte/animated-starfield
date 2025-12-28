@@ -14,6 +14,8 @@ export type StarFieldOptions = {
         medium: StarOptions;
         large: StarOptions;
     };
+    fadeInDuration?: number;
+    fadeInFrom?: 'white' | 'black' | 'transparent';
 };
 
 /**
@@ -139,6 +141,10 @@ class StarField {
     width: number;
     height: number;
     parent: HTMLElement;
+    fadeInProgress: number;
+    fadeInDuration: number;
+    fadeInFrom: 'white' | 'black' | 'transparent';
+    startTime: number;
 
     constructor(container: HTMLElement, options: StarFieldOptions) {
         const { direction, sizes } = options;
@@ -166,6 +172,12 @@ class StarField {
 
         // Generate initial stars based on the options
         this.stars = this.generateStars(sizes, direction);
+
+        // Initialize fade-in properties
+        this.fadeInProgress = 0;
+        this.fadeInDuration = options.fadeInDuration || 1000;
+        this.fadeInFrom = options.fadeInFrom || 'black';
+        this.startTime = performance.now();
 
         // Resize the canvas to match the parent container
         this.resizeCanvas();
@@ -310,10 +322,54 @@ class StarField {
         const { context, width, height, options, stars } = this;
         const time = performance.now();
 
-        // Clear the canvas and fill it with the background color
+        // Clear the canvas
         context.clearRect(0, 0, width, height);
-        context.fillStyle = options.background;
-        context.fillRect(0, 0, width, height);
+
+        // Handle fade-in effect
+        if (this.fadeInProgress < 1) {
+            this.fadeInProgress = Math.min(1, (time - this.startTime) / this.fadeInDuration);
+        }
+
+        // Handle background fade-in based on fadeInFrom option
+        if (this.fadeInProgress < 1 && this.fadeInFrom !== 'transparent') {
+            // Calculate intermediate color during fade
+            if (this.fadeInFrom === 'white') {
+                // Fade from white to background
+                const progress = this.fadeInProgress;
+                const r1 = 255,
+                    g1 = 255,
+                    b1 = 255; // White
+                const r2 = parseInt(options.background.slice(1, 3), 16);
+                const g2 = parseInt(options.background.slice(3, 5), 16);
+                const b2 = parseInt(options.background.slice(5, 7), 16);
+
+                const r = Math.round(r1 + (r2 - r1) * progress);
+                const g = Math.round(g1 + (g2 - g1) * progress);
+                const b = Math.round(b1 + (b2 - b1) * progress);
+
+                context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            } else {
+                // Fade from black to background
+                const progress = this.fadeInProgress;
+                const r1 = 0,
+                    g1 = 0,
+                    b1 = 0; // Black
+                const r2 = parseInt(options.background.slice(1, 3), 16);
+                const g2 = parseInt(options.background.slice(3, 5), 16);
+                const b2 = parseInt(options.background.slice(5, 7), 16);
+
+                const r = Math.round(r1 + (r2 - r1) * progress);
+                const g = Math.round(g1 + (g2 - g1) * progress);
+                const b = Math.round(b1 + (b2 - b1) * progress);
+
+                context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            }
+            context.fillRect(0, 0, width, height);
+        } else {
+            // Normal background when fade-in is complete
+            context.fillStyle = options.background;
+            context.fillRect(0, 0, width, height);
+        }
 
         // Helper function to reset star position based on boundary checks
         const resetPosition = (value: number, limit: number) => (value < 0 ? limit : value > limit ? 0 : value);
@@ -324,7 +380,17 @@ class StarField {
         // Update and draw each star
         for (const star of stars) {
             star.update(time);
-            this.drawStar(star);
+
+            // Apply fade-in to star opacity if fading from transparent
+            if (this.fadeInFrom === 'transparent' && this.fadeInProgress < 1) {
+                const originalOpacity = star.opacity;
+                star.opacity = originalOpacity * this.fadeInProgress;
+                this.drawStar(star);
+                star.opacity = originalOpacity; // Restore original opacity
+            } else {
+                // Draw star normally (opacity handled in drawStar method)
+                this.drawStar(star);
+            }
 
             // Reset the star's position
             star.x = resetPosition(star.x, width);
@@ -432,7 +498,9 @@ const initialize = (options: Partial<StarFieldOptions>): StarField | null => {
                 speed: 0.5,
                 blink: 2000
             }
-        }
+        },
+        fadeInDuration: 1000,
+        fadeInFrom: 'black'
     };
 
     // Combine user-provided options with default settings

@@ -167,11 +167,11 @@ Just pass an object containing the properties to update. You can provide any com
 
 ```js
 const options = {
-    container: '#star-container',
+    container: '.starfield',
     ...
 };
 
-const starsInstance = animatedStarField(options);
+const starFieldInstance = animatedStarField(options);
 
 // update the options anytime
 if (starFieldInstance) {
